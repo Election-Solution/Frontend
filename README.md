@@ -50,4 +50,5 @@ Make sure you have the following installed on your local machine:
    git clone [https://github.com/your-org/watchdog-alert-frontend.git](https://github.com/your-org/watchdog-alert-frontend.git)
    cd watchdog-alert-frontend
    ```
+
 # Frontend

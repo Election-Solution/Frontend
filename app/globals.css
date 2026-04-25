@@ -1,0 +1,214 @@
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap");
+@import "tailwindcss";
+
+/* =========================
+   THEME (Design Tokens)
+========================= */
+@theme inline {
+  /* Colors */
+  --color-ng-green: #008751;
+  --color-ng-red: #e53935;
+  --color-ng-yellow: #ffc107;
+  --color-ng-dark: #1a1a1a;
+
+  /* Fonts */
+  --font-display: var(--font-display), sans-serif;
+  --font-body: var(--font-body), sans-serif;
+
+  /* Shadows */
+  --shadow-brutal: 4px 4px 0px 0px #1a1a1a;
+  --shadow-brutal-sm: 2px 2px 0px 0px #1a1a1a;
+  --shadow-brutal-lg: 6px 6px 0px 0px #1a1a1a;
+  --shadow-brutal-green: 4px 4px 0px 0px #008751;
+  --shadow-brutal-red: 4px 4px 0px 0px #e53935;
+}
+:root {
+  --font-display: "Syne", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+  --ng-green: #008751;
+  --ng-red: #e53935;
+  --ng-yellow: #ffc107;
+  --ng-dark: #1a1a1a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ng-dark);
+  background-color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+}
+
+/* Ticker animation */
+@keyframes ticker {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.ticker-content {
+  animation: ticker 22s linear infinite;
+  white-space: nowrap;
+}
+
+/* Pulse dot */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.4);
+  }
+}
+
+.pulse-dot {
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+/* Fade in up */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.fade-in-up-delay-1 {
+  animation-delay: 0.1s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-name: fadeInUp;
+  animation-duration: 0.6s;
+  animation-timing-function: ease;
+}
+.fade-in-up-delay-2 {
+  animation-delay: 0.2s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-name: fadeInUp;
+  animation-duration: 0.6s;
+  animation-timing-function: ease;
+}
+.fade-in-up-delay-3 {
+  animation-delay: 0.35s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-name: fadeInUp;
+  animation-duration: 0.6s;
+  animation-timing-function: ease;
+}
+.fade-in-up-delay-4 {
+  animation-delay: 0.5s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-name: fadeInUp;
+  animation-duration: 0.6s;
+  animation-timing-function: ease;
+}
+
+/* Card hover lift */
+.card-hover {
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.card-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #1a1a1a;
+}
+
+/* Kanban card hover */
+.kanban-card-hover {
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+  cursor: pointer;
+}
+.kanban-card-hover:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0px 0px #1a1a1a;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #1a1a1a;
+  border-radius: 0px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #008751;
+}
+
+/* Leaflet overrides */
+.leaflet-container {
+  font-family: var(--font-body);
+  border: 2px solid #1a1a1a;
+}
+
+.leaflet-popup-content-wrapper {
+  border: 2px solid #1a1a1a;
+  border-radius: 0;
+  box-shadow: 4px 4px 0px 0px #1a1a1a;
+}
+.leaflet-popup-tip {
+  background: #1a1a1a;
+}
+
+/* Radio input style */
+.incident-radio {
+  display: none;
+}
+.incident-radio:checked + label {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  border-color: #1a1a1a;
+}
+
+/* Dropzone */
+.dropzone-active {
+  border-color: #008751 !important;
+  background-color: #f0fdf4 !important;
+}
+
+/* Diagonal pattern bg */
+.diagonal-bg {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 4px,
+    rgba(0, 135, 81, 0.05) 4px,
+    rgba(0, 135, 81, 0.05) 8px
+  );
+}
