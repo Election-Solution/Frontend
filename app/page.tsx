@@ -1,15 +1,23 @@
-import Link from 'next/link'
-import Navbar from '@/components/Navbar'
-import LiveTicker from '@/components/LiveTicker'
-import { SeverityBadge } from '@/components/Badges'
-import { stats, mockIncidents } from '@/lib/mockData'
+import Link from "next/link";
+import Navbar from "@/components/Navbar";
+import LiveTicker from "@/components/LiveTicker";
+import { SeverityBadge } from "@/components/Badges";
+import { stats, mockIncidents } from "@/lib/mockData";
 import {
-  AlertTriangle, MapPin, Shield, Users, CheckCircle,
-  ArrowRight, Eye, Zap, TrendingUp, Clock
-} from 'lucide-react'
+  AlertTriangle,
+  MapPin,
+  Shield,
+  Users,
+  CheckCircle,
+  ArrowRight,
+  Eye,
+  Zap,
+  TrendingUp,
+  Clock,
+} from "lucide-react";
 
 export default function LandingPage() {
-  const recentIncidents = mockIncidents.slice(0, 4)
+  const recentIncidents = mockIncidents.slice(0, 4);
 
   return (
     <div className="min-h-screen bg-white">
@@ -40,14 +48,20 @@ export default function LandingPage() {
                 <br />
                 <span className="text-ng-green">Alert.</span>
                 <br />
-                <span className="text-3xl md:text-4xl font-600 text-gray-600">Real-Time Election</span>
+                <span className="text-3xl md:text-4xl font-600 text-gray-600">
+                  Real-Time Election
+                </span>
                 <br />
-                <span className="text-3xl md:text-4xl font-600 text-gray-600">Monitoring.</span>
+                <span className="text-3xl md:text-4xl font-600 text-gray-600">
+                  Monitoring.
+                </span>
               </h1>
 
               <p className="fade-in-up-delay-2 font-body text-gray-600 text-lg leading-relaxed mb-10 max-w-lg">
-                Empowering citizens. Ensuring transparency.{' '}
-                <strong className="text-ng-dark">Report polling unit incidents instantly</strong>{' '}
+                Empowering citizens. Ensuring transparency.{" "}
+                <strong className="text-ng-dark">
+                  Report polling unit incidents instantly
+                </strong>{" "}
                 for rapid intervention.
               </p>
 
@@ -58,7 +72,10 @@ export default function LandingPage() {
                 >
                   <AlertTriangle size={20} />
                   Report an Incident
-                  <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight
+                    size={16}
+                    className="group-hover:translate-x-1 transition-transform"
+                  />
                 </Link>
                 <Link
                   href="/map"
@@ -73,15 +90,50 @@ export default function LandingPage() {
             {/* Right: stat cards */}
             <div className="fade-in-up-delay-4 grid grid-cols-2 gap-4">
               {[
-                { label: 'Total Incidents', value: stats.total, icon: AlertTriangle, color: 'bg-ng-dark', textColor: 'text-white' },
-                { label: 'Critical Alerts', value: stats.critical, icon: Zap, color: 'bg-ng-red', textColor: 'text-white' },
-                { label: 'Interventions', value: stats.dispatched, icon: Shield, color: 'bg-ng-yellow', textColor: 'text-ng-dark' },
-                { label: 'Resolved Today', value: stats.resolved, icon: CheckCircle, color: 'bg-ng-green', textColor: 'text-white' },
+                {
+                  label: "Total Incidents",
+                  value: stats.total,
+                  icon: AlertTriangle,
+                  color: "bg-ng-dark",
+                  textColor: "text-white",
+                },
+                {
+                  label: "Critical Alerts",
+                  value: stats.critical,
+                  icon: Zap,
+                  color: "bg-ng-red",
+                  textColor: "text-white",
+                },
+                {
+                  label: "Interventions",
+                  value: stats.dispatched,
+                  icon: Shield,
+                  color: "bg-ng-yellow",
+                  textColor: "text-ng-dark",
+                },
+                {
+                  label: "Resolved Today",
+                  value: stats.resolved,
+                  icon: CheckCircle,
+                  color: "bg-ng-green",
+                  textColor: "text-white",
+                },
               ].map(({ label, value, icon: Icon, color, textColor }) => (
-                <div key={label} className={`${color} border-2 border-ng-dark shadow-brutal p-5 card-hover`}>
+                <div
+                  key={label}
+                  className={`${color} border-2 border-ng-dark shadow-brutal p-5 card-hover`}
+                >
                   <Icon size={22} className={`${textColor} mb-3 opacity-80`} />
-                  <div className={`font-display text-4xl font-800 ${textColor} mb-1`}>{value}</div>
-                  <div className={`font-body text-xs ${textColor} opacity-80 uppercase tracking-wider`}>{label}</div>
+                  <div
+                    className={`font-display text-4xl font-800 ${textColor} mb-1`}
+                  >
+                    {value}
+                  </div>
+                  <div
+                    className={`font-body text-xs ${textColor} opacity-80 uppercase tracking-wider`}
+                  >
+                    {label}
+                  </div>
                 </div>
               ))}
             </div>
@@ -97,42 +149,53 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-end justify-between mb-12">
             <div>
-              <p className="text-ng-green font-display font-700 text-sm uppercase tracking-widest mb-2">Process</p>
-              <h2 className="font-display text-4xl font-800 text-ng-dark">How It Works</h2>
+              <p className="text-ng-green font-display font-700 text-sm uppercase tracking-widest mb-2">
+                Process
+              </p>
+              <h2 className="font-display text-4xl font-800 text-ng-dark">
+                How It Works
+              </h2>
             </div>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                step: '01',
+                step: "01",
                 icon: Eye,
-                title: 'Witness & Report',
-                desc: 'Any citizen, party agent, or observer witnesses an incident and submits a report via our secure form in under 60 seconds.',
-                color: 'bg-white',
+                title: "Witness & Report",
+                desc: "Any citizen, party agent, or observer witnesses an incident and submits a report via our secure form in under 60 seconds.",
+                color: "bg-white",
               },
               {
-                step: '02',
+                step: "02",
                 icon: TrendingUp,
-                title: 'AI Triage',
-                desc: 'Our system auto-generates an urgency score, tags the incident type, and routes it to the appropriate response team.',
-                color: 'bg-ng-yellow',
+                title: "AI Triage",
+                desc: "Our system auto-generates an urgency score, tags the incident type, and routes it to the appropriate response team.",
+                color: "bg-ng-yellow",
               },
               {
-                step: '03',
+                step: "03",
                 icon: Shield,
-                title: 'Rapid Intervention',
-                desc: 'Security forces, electoral officers, or NGO observers are alerted within minutes for critical incidents.',
-                color: 'bg-ng-green',
+                title: "Rapid Intervention",
+                desc: "Security forces, electoral officers, or NGO observers are alerted within minutes for critical incidents.",
+                color: "bg-ng-green",
               },
             ].map(({ step, icon: Icon, title, desc, color }) => (
-              <div key={step} className={`${color} border-2 border-ng-dark p-8 shadow-brutal card-hover relative`}>
+              <div
+                key={step}
+                className={`${color} border-2 border-ng-dark p-8 shadow-brutal card-hover relative`}
+              >
                 <div className="absolute top-4 right-4 font-display text-6xl font-800 text-ng-dark opacity-10">
                   {step}
                 </div>
                 <Icon size={28} className="text-ng-dark mb-4" />
-                <h3 className="font-display text-xl font-700 text-ng-dark mb-3">{title}</h3>
-                <p className="font-body text-gray-600 text-sm leading-relaxed">{desc}</p>
+                <h3 className="font-display text-xl font-700 text-ng-dark mb-3">
+                  {title}
+                </h3>
+                <p className="font-body text-gray-600 text-sm leading-relaxed">
+                  {desc}
+                </p>
               </div>
             ))}
           </div>
@@ -144,17 +207,27 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-end justify-between mb-10">
             <div>
-              <p className="text-ng-green font-display font-700 text-sm uppercase tracking-widest mb-2">Public Feed</p>
-              <h2 className="font-display text-4xl font-800 text-ng-dark">Recent Alerts</h2>
+              <p className="text-ng-green font-display font-700 text-sm uppercase tracking-widest mb-2">
+                Public Feed
+              </p>
+              <h2 className="font-display text-4xl font-800 text-ng-dark">
+                Recent Alerts
+              </h2>
             </div>
-            <Link href="/map" className="hidden md:flex items-center gap-2 text-ng-dark font-display font-600 text-sm border-b-2 border-ng-dark pb-0.5 hover:text-ng-green hover:border-ng-green transition-colors">
+            <Link
+              href="/map"
+              className="hidden md:flex items-center gap-2 text-ng-dark font-display font-600 text-sm border-b-2 border-ng-dark pb-0.5 hover:text-ng-green hover:border-ng-green transition-colors"
+            >
               View All on Map <ArrowRight size={14} />
             </Link>
           </div>
 
           <div className="grid md:grid-cols-2 gap-5">
-            {recentIncidents.map(incident => (
-              <div key={incident.id} className="bg-white border-2 border-ng-dark shadow-brutal p-5 card-hover">
+            {recentIncidents.map((incident) => (
+              <div
+                key={incident.id}
+                className="bg-white border-2 border-ng-dark shadow-brutal p-5 card-hover"
+              >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex gap-2 flex-wrap">
                     <SeverityBadge severity={incident.severity} size="sm" />
@@ -163,7 +236,11 @@ export default function LandingPage() {
                     </span>
                   </div>
                   <span className="text-xs font-body text-gray-400 flex items-center gap-1">
-                    <Clock size={12} /> {new Date(incident.reportedAt).toLocaleTimeString('en-NG', { hour: '2-digit', minute: '2-digit' })}
+                    <Clock size={12} />{" "}
+                    {new Date(incident.reportedAt).toLocaleTimeString("en-NG", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 mb-3">
@@ -176,15 +253,29 @@ export default function LandingPage() {
                   {incident.summary}
                 </p>
                 <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
-                  <span className={`text-xs font-display font-700 uppercase tracking-wider
-                    ${incident.status === 'resolved' ? 'text-ng-green' :
-                      incident.status === 'dispatched' ? 'text-blue-600' :
-                      incident.status === 'verifying' ? 'text-amber-600' : 'text-ng-red'}`}>
-                    {incident.status === 'new' ? '● New Alert' :
-                      incident.status === 'verifying' ? '◐ Verifying' :
-                      incident.status === 'dispatched' ? '⟳ Dispatched' : '✓ Resolved'}
+                  <span
+                    className={`text-xs font-display font-700 uppercase tracking-wider
+                    ${
+                      incident.status === "resolved"
+                        ? "text-ng-green"
+                        : incident.status === "dispatched"
+                          ? "text-blue-600"
+                          : incident.status === "verifying"
+                            ? "text-amber-600"
+                            : "text-ng-red"
+                    }`}
+                  >
+                    {incident.status === "new"
+                      ? "● New Alert"
+                      : incident.status === "verifying"
+                        ? "◐ Verifying"
+                        : incident.status === "dispatched"
+                          ? "⟳ Dispatched"
+                          : "✓ Resolved"}
                   </span>
-                  <span className="text-xs font-body text-gray-400">{incident.id}</span>
+                  <span className="text-xs font-body text-gray-400">
+                    {incident.id}
+                  </span>
                 </div>
               </div>
             ))}
@@ -199,7 +290,9 @@ export default function LandingPage() {
             <h2 className="font-display text-3xl md:text-4xl font-800 text-white mb-2">
               See something? Report it.
             </h2>
-            <p className="font-body text-gray-400">Your report could trigger a life-saving intervention in minutes.</p>
+            <p className="font-body text-gray-400">
+              Your report could trigger a life-saving intervention in minutes.
+            </p>
           </div>
           <Link
             href="/report"
@@ -216,15 +309,21 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <Shield size={16} className="text-ng-green" />
-            <span className="font-display text-sm font-700 text-ng-dark">WatchDog Alert</span>
-            <span className="font-body text-xs text-gray-400 ml-2">© 2024 — Built for Democracy</span>
+            <span className="font-display text-sm font-700 text-ng-dark">
+              WatchDog Alert
+            </span>
+            <span className="font-body text-xs text-gray-400 ml-2">
+              © 2024 — Built for Democracy
+            </span>
           </div>
           <div className="flex items-center gap-1">
             <Users size={14} className="text-gray-400" />
-            <span className="font-body text-xs text-gray-400">Powered by citizen observers across Nigeria</span>
+            <span className="font-body text-xs text-gray-400">
+              Powered by citizen observers across Nigeria
+            </span>
           </div>
         </div>
       </footer>
     </div>
-  )
+  );
 }
