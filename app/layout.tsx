@@ -9,7 +9,6 @@ export const metadata: Metadata = {
     "Empowering citizens. Ensuring transparency. Report polling unit incidents instantly for rapid intervention.",
 };
 
-// const queryClient = new QueryClient();
 export default function RootLayout({
   children,
 }: {
@@ -18,13 +17,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {/* <QueryClientProvider client={queryClient}> */}
         {/* <TooltipProvider> */}
         {/* <Toaster /> */}
         {/* <Sonner /> */}
         <AppLayout>{children}</AppLayout>
         {/* </TooltipProvider> */}
-        {/* </QueryClientProvider> */}
       </body>
     </html>
   );
