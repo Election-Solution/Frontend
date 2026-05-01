@@ -27,7 +27,7 @@ const severityLabel: Record<Severity, string> = {
   high: "High",
 };
 
-export default function Admin() {
+const Admin = () => {
   const [items, setItems] = useState<Incident[]>(mockIncidents);
 
   const grouped = useMemo(() => {
@@ -142,4 +142,6 @@ export default function Admin() {
       </div>
     </section>
   );
-}
+};
+
+export default Admin;

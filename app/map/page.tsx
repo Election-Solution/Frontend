@@ -85,7 +85,7 @@ const MapPage = () => {
                 }}
               >
                 <Popup>
-                  <div className="min-w-[220px] p-1">
+                  <div className="min-w-55 p-1">
                     <span
                       className="inline-block rounded-full px-2 py-0.5 text-[11px] font-bold"
                       style={{

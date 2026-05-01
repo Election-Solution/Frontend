@@ -215,7 +215,7 @@
   .container-page {
     margin-inline: auto;
     width: 100%;
-    max-width: 48rem; /* max-w-3xl */
+    max-width: 70rem;
     padding-inline: 1.25rem; /* px-5 */
   }
   @media (min-width: 640px) {
