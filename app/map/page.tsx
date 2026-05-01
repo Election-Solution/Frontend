@@ -1,193 +1,139 @@
-'use client'
+"use client";
 
-import dynamic from 'next/dynamic'
-import Navbar from '@/components/Navbar'
-import { mockIncidents } from '@/lib/mockData'
-import { SeverityBadge, TypeBadge } from '@/components/Badges'
-import { MapPin, AlertTriangle, Clock, Filter } from 'lucide-react'
-import { useState } from 'react'
+import { useState } from "react";
+import {
+  MapContainer,
+  TileLayer,
+  CircleMarker,
+  Popup,
+  ZoomControl,
+} from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import { mockIncidents, type Incident } from "@/data/mockIncidents";
 
-// Dynamic import to avoid SSR issues with Leaflet
-const MapComponent = dynamic(() => import('@/components/MapComponent'), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-full bg-gray-100 border-2 border-ng-dark flex items-center justify-center">
-      <div className="text-center">
-        <div className="inline-block w-8 h-8 border-2 border-ng-dark border-t-ng-green rounded-full animate-spin mb-3" />
-        <p className="font-display text-sm font-700 text-ng-dark">Loading map...</p>
-      </div>
-    </div>
-  ),
-})
+const MapPage = () => {
+  const [filter, setFilter] = useState<"all" | "issues" | "clear">("all");
 
-type FilterType = 'all' | 'critical' | 'security' | 'logistics'
+  const visible = mockIncidents.filter((i) =>
+    filter === "all"
+      ? true
+      : filter === "clear"
+        ? i.status === "resolved"
+        : i.status !== "resolved",
+  );
 
-export default function MapPage() {
-  const [filter, setFilter] = useState<FilterType>('all')
-  const [selectedId, setSelectedId] = useState<string | null>(null)
-
-  const filtered = mockIncidents.filter(i => {
-    if (filter === 'all') return true
-    if (filter === 'critical') return i.severity === 'critical'
-    if (filter === 'security') return i.type === 'security'
-    if (filter === 'logistics') return i.type === 'logistics' || i.type === 'materials'
-    return true
-  })
-
-  const selected = mockIncidents.find(i => i.id === selectedId)
-
-  const stats = {
-    total: mockIncidents.length,
-    critical: mockIncidents.filter(i => i.severity === 'critical').length,
-    resolved: mockIncidents.filter(i => i.status === 'resolved').length,
-  }
+  const colorFor = (i: Incident) =>
+    i.status === "resolved" ? "hsl(153 70% 38%)" : "hsl(0 72% 55%)";
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      <Navbar />
-
-      {/* Page header */}
-      <div className="border-b-2 border-ng-dark px-4 sm:px-6 py-4 bg-white">
-        <div className="max-w-screen-2xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h1 className="font-display text-2xl font-800 text-ng-dark flex items-center gap-3">
-              <MapPin size={22} className="text-ng-green" />
-              Live Incident Heatmap
-            </h1>
-            <p className="font-body text-gray-500 text-sm mt-0.5">
-              Showing {filtered.length} of {stats.total} incidents · Updated in real-time
-            </p>
-          </div>
-
-          {/* Stats row */}
-          <div className="flex items-center gap-3 flex-wrap">
-            {[
-              { label: 'Total', value: stats.total, color: 'bg-ng-dark text-white' },
-              { label: 'Critical', value: stats.critical, color: 'bg-ng-red text-white' },
-              { label: 'Resolved', value: stats.resolved, color: 'bg-ng-green text-white' },
-            ].map(s => (
-              <div key={s.label} className={`${s.color} border-2 border-ng-dark px-3 py-1.5 flex items-center gap-2`}>
-                <span className="font-display font-800 text-sm">{s.value}</span>
-                <span className="font-body text-xs opacity-80">{s.label}</span>
-              </div>
-            ))}
-          </div>
+    <section className="container-page py-6 sm:py-10">
+      <header className="mb-4 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-extrabold sm:text-4xl">Live Map</h1>
+          <p className="mt-1 text-muted-foreground">
+            Tap a dot to see the gist.
+          </p>
         </div>
-      </div>
-
-      {/* Filters */}
-      <div className="border-b-2 border-ng-dark px-4 sm:px-6 py-3 bg-gray-50">
-        <div className="max-w-screen-2xl mx-auto flex items-center gap-3 flex-wrap">
-          <Filter size={14} className="text-gray-500" />
-          <span className="font-display text-xs font-700 uppercase tracking-wider text-gray-500">Filter:</span>
-          {([
-            { id: 'all', label: 'All Incidents' },
-            { id: 'critical', label: '⚡ Critical Only' },
-            { id: 'security', label: '🚨 Security' },
-            { id: 'logistics', label: '📦 Logistics' },
-          ] as { id: FilterType; label: string }[]).map(f => (
+        <div className="flex items-center gap-2 text-sm">
+          {[
+            { k: "all", label: "All" },
+            { k: "issues", label: "Issues" },
+            { k: "clear", label: "All clear" },
+          ].map((f) => (
             <button
-              key={f.id}
-              onClick={() => setFilter(f.id)}
-              className={`px-4 py-1.5 text-xs font-display font-700 border-2 transition-all duration-150
-                ${filter === f.id
-                  ? 'bg-ng-dark text-white border-ng-dark shadow-brutal-sm'
-                  : 'bg-white border-ng-dark text-ng-dark hover:bg-ng-dark hover:text-white'
-                }`}
+              key={f.k}
+              onClick={() => setFilter(f.k as typeof filter)}
+              className={`rounded-full px-3 py-1.5 font-semibold transition-colors ${
+                filter === f.k
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-secondary text-foreground hover:bg-secondary/70"
+              }`}
             >
               {f.label}
             </button>
           ))}
         </div>
-      </div>
+      </header>
 
-      {/* Map + sidebar layout */}
-      <div className="flex-1 flex overflow-hidden" style={{ height: 'calc(100vh - 200px)' }}>
-        {/* Map */}
-        <div className="flex-1 relative">
-          <MapComponent
-            incidents={filtered}
-            selectedId={selectedId}
-            onSelect={setSelectedId}
+      <div className="relative overflow-hidden rounded-3xl border border-border bg-secondary/40 shadow-card">
+        <MapContainer
+          center={[9.082, 8.6753]} // center of Nigeria
+          zoom={6}
+          minZoom={5}
+          maxZoom={18}
+          scrollWheelZoom
+          zoomControl={false}
+          className="h-[60vh] w-full sm:h-[72vh]"
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
           />
-
-          {/* Legend */}
-          <div className="absolute bottom-4 left-4 bg-white border-2 border-ng-dark shadow-brutal p-3 z-[1000]">
-            <p className="font-display text-xs font-800 uppercase tracking-wider text-ng-dark mb-2">Legend</p>
-            <div className="space-y-1.5">
-              {[
-                { color: 'bg-ng-red', label: 'Security / Critical' },
-                { color: 'bg-ng-yellow', label: 'Logistics / Moderate' },
-                { color: 'bg-ng-green', label: 'Resolved / Safe' },
-              ].map(l => (
-                <div key={l.label} className="flex items-center gap-2">
-                  <div className={`w-3 h-3 rounded-full ${l.color} border border-ng-dark`} />
-                  <span className="font-body text-xs text-ng-dark">{l.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Sidebar */}
-        <div className="w-80 border-l-2 border-ng-dark bg-white flex flex-col overflow-hidden">
-          <div className="border-b-2 border-ng-dark px-4 py-3">
-            <h2 className="font-display text-sm font-800 uppercase tracking-wider text-ng-dark">
-              Recent Alerts
-            </h2>
-          </div>
-
-          <div className="flex-1 overflow-y-auto">
-            {filtered.map(incident => (
-              <button
-                key={incident.id}
-                onClick={() => setSelectedId(selectedId === incident.id ? null : incident.id)}
-                className={`w-full text-left px-4 py-4 border-b-2 border-ng-dark transition-all duration-150
-                  ${selectedId === incident.id ? 'bg-ng-dark' : 'bg-white hover:bg-gray-50'}`}
+          <ZoomControl position="topright" />
+          {visible.map((i) => {
+            const color = colorFor(i);
+            return (
+              <CircleMarker
+                key={i.id}
+                center={[i.lat, i.lng]}
+                radius={11}
+                pathOptions={{
+                  color: "white",
+                  weight: 3,
+                  fillColor: color,
+                  fillOpacity: 1,
+                }}
               >
-                <div className="flex items-center justify-between mb-2">
-                  <SeverityBadge severity={incident.severity} size="sm" />
-                  <span className={`text-[10px] font-body flex items-center gap-1 ${selectedId === incident.id ? 'text-gray-400' : 'text-gray-400'}`}>
-                    <Clock size={10} />
-                    {new Date(incident.reportedAt).toLocaleTimeString('en-NG', { hour: '2-digit', minute: '2-digit' })}
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5 mb-1.5">
-                  <MapPin size={11} className={`flex-shrink-0 ${selectedId === incident.id ? 'text-ng-green' : 'text-ng-green'}`} />
-                  <span className={`font-display text-xs font-700 ${selectedId === incident.id ? 'text-white' : 'text-ng-dark'}`}>
-                    {incident.ward}, {incident.lga}
-                  </span>
-                </div>
-                <p className={`font-body text-xs leading-relaxed line-clamp-2 ${selectedId === incident.id ? 'text-gray-300' : 'text-gray-500'}`}>
-                  {incident.summary}
-                </p>
-                <div className="mt-2">
-                  <TypeBadge type={incident.type} label={incident.typeLabel} />
-                </div>
-              </button>
-            ))}
-          </div>
+                <Popup>
+                  <div className="min-w-[220px] p-1">
+                    <span
+                      className="inline-block rounded-full px-2 py-0.5 text-[11px] font-bold"
+                      style={{
+                        background:
+                          i.status === "resolved"
+                            ? "hsl(153 60% 95%)"
+                            : "hsl(0 80% 97%)",
+                        color:
+                          i.status === "resolved"
+                            ? "hsl(153 70% 30%)"
+                            : "hsl(0 72% 45%)",
+                      }}
+                    >
+                      {i.status === "resolved" ? "All clear" : "Issue reported"}
+                    </span>
+                    <p className="mt-2 text-base font-extrabold leading-tight">
+                      {i.pollingUnit}, {i.ward}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {i.lga}, {i.state}
+                    </p>
+                    <p className="mt-2 text-sm leading-relaxed">{i.summary}</p>
+                    <p className="mt-2 text-[11px] text-muted-foreground">
+                      {i.reportedAt} • {i.id}
+                    </p>
+                  </div>
+                </Popup>
+              </CircleMarker>
+            );
+          })}
+        </MapContainer>
 
-          {/* Add report CTA */}
-          <div className="border-t-2 border-ng-dark p-4">
-            <a
-              href="/report"
-              className="w-full flex items-center justify-center gap-2 bg-ng-green text-white font-display font-700 text-xs py-3 border-2 border-ng-dark shadow-brutal-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-brutal transition-all"
-            >
-              <AlertTriangle size={14} />
-              Report an Incident
-            </a>
-          </div>
+        {/* Legend */}
+        <div className="flex items-center justify-center gap-5 border-t border-border bg-background/95 px-4 py-3 text-sm">
+          <span className="inline-flex items-center gap-2">
+            <span className="h-3 w-3 rounded-full bg-success" /> All clear
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <span className="h-3 w-3 rounded-full bg-destructive" /> Issue
+            reported
+          </span>
+          <span className="ml-auto hidden text-xs text-muted-foreground sm:inline">
+            Showing {visible.length} of {mockIncidents.length}
+          </span>
         </div>
       </div>
+    </section>
+  );
+};
 
-      {/* Detail panel when selected (mobile) */}
-      {selected && (
-        <div className="md:hidden border-t-2 border-ng-dark bg-white p-4">
-          <h3 className="font-display font-700 text-sm text-ng-dark mb-2">{selected.ward}, {selected.lga}, {selected.state}</h3>
-          <p className="font-body text-xs text-gray-600 line-clamp-3">{selected.summary}</p>
-        </div>
-      )}
-    </div>
-  )
-}
+export default MapPage;

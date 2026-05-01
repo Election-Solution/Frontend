@@ -1,214 +1,300 @@
-@import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap");
 @import "tailwindcss";
+/* @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"); */
 
-/* =========================
-   THEME (Design Tokens)
-========================= */
+/* Enable class-based dark mode (Tailwind v4 syntax) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------
+ * Design tokens — exposed to Tailwind via @theme so utilities like
+ * `bg-primary`, `text-foreground`, `border-border`, `shadow-soft`
+ * are auto-generated.
+ * --------------------------------------------------------------- */
 @theme inline {
-  /* Colors */
-  --color-ng-green: #008751;
-  --color-ng-red: #e53935;
-  --color-ng-yellow: #ffc107;
-  --color-ng-dark: #1a1a1a;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
 
-  /* Fonts */
-  --font-display: var(--font-display), sans-serif;
-  --font-body: var(--font-body), sans-serif;
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
 
-  /* Shadows */
-  --shadow-brutal: 4px 4px 0px 0px #1a1a1a;
-  --shadow-brutal-sm: 2px 2px 0px 0px #1a1a1a;
-  --shadow-brutal-lg: 6px 6px 0px 0px #1a1a1a;
-  --shadow-brutal-green: 4px 4px 0px 0px #008751;
-  --shadow-brutal-red: 4px 4px 0px 0px #e53935;
-}
-:root {
-  --font-display: "Syne", sans-serif;
-  --font-body: "DM Sans", sans-serif;
-  --ng-green: #008751;
-  --ng-red: #e53935;
-  --ng-yellow: #ffc107;
-  --ng-dark: #1a1a1a;
-}
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
 
-* {
-  box-sizing: border-box;
-}
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
 
-body {
-  font-family: var(--font-body);
-  color: var(--ng-dark);
-  background-color: #ffffff;
-  -webkit-font-smoothing: antialiased;
-}
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-soft: hsl(var(--primary-soft));
+  --color-primary-hover: hsl(var(--primary-hover));
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-display);
-}
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
 
-/* Ticker animation */
-@keyframes ticker {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
 
-.ticker-content {
-  animation: ticker 22s linear infinite;
-  white-space: nowrap;
-}
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
 
-/* Pulse dot */
-@keyframes pulse-dot {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.5;
-    transform: scale(1.4);
-  }
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
+  --color-warning-soft: hsl(var(--warning-soft));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive-soft: hsl(var(--destructive-soft));
+
+  --color-success: hsl(var(--success));
+  --color-success-soft: hsl(var(--success-soft));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-sidebar: hsl(var(--sidebar-background));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+
+  --shadow-soft:
+    0 1px 2px hsl(160 20% 12% / 0.04), 0 4px 16px hsl(160 20% 12% / 0.04);
+  --shadow-card: 0 1px 2px hsl(160 20% 12% / 0.03);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
 }
 
-.pulse-dot {
-  animation: pulse-dot 1.5s ease-in-out infinite;
-}
-
-/* Fade in up */
-@keyframes fadeInUp {
+@keyframes accordion-down {
   from {
-    opacity: 0;
-    transform: translateY(24px);
+    height: 0;
   }
   to {
-    opacity: 1;
-    transform: translateY(0);
+    height: var(--radix-accordion-content-height);
+  }
+}
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
   }
 }
 
-.fade-in-up {
-  animation: fadeInUp 0.6s ease forwards;
+/* ---------------------------------------------------------------
+ * Light theme tokens (Nigerian green primary, generous white)
+ * --------------------------------------------------------------- */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 160 20% 12%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 160 20% 12%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 160 20% 12%;
+
+  /* Nigerian flag green #008751 */
+  --primary: 153 100% 26%;
+  --primary-foreground: 0 0% 100%;
+  --primary-soft: 153 60% 95%;
+  --primary-hover: 153 100% 22%;
+
+  --secondary: 150 20% 96%;
+  --secondary-foreground: 160 20% 14%;
+
+  --muted: 150 16% 96%;
+  --muted-foreground: 160 10% 42%;
+
+  --accent: 153 60% 95%;
+  --accent-foreground: 153 100% 22%;
+
+  --warning: 38 92% 50%;
+  --warning-foreground: 30 60% 18%;
+  --warning-soft: 42 100% 96%;
+
+  --destructive: 0 72% 55%;
+  --destructive-foreground: 0 0% 100%;
+  --destructive-soft: 0 80% 97%;
+
+  --success: 153 70% 38%;
+  --success-soft: 153 60% 95%;
+
+  --border: 150 14% 92%;
+  --input: 150 14% 92%;
+  --ring: 153 100% 26%;
+
+  --radius: 1rem;
+
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 240 5.3% 26.1%;
+  --sidebar-primary: 240 5.9% 10%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 240 4.8% 95.9%;
+  --sidebar-accent-foreground: 240 5.9% 10%;
+  --sidebar-border: 220 13% 91%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
 }
 
-.fade-in-up-delay-1 {
-  animation-delay: 0.1s;
-  opacity: 0;
-  animation-fill-mode: forwards;
-  animation-name: fadeInUp;
-  animation-duration: 0.6s;
-  animation-timing-function: ease;
-}
-.fade-in-up-delay-2 {
-  animation-delay: 0.2s;
-  opacity: 0;
-  animation-fill-mode: forwards;
-  animation-name: fadeInUp;
-  animation-duration: 0.6s;
-  animation-timing-function: ease;
-}
-.fade-in-up-delay-3 {
-  animation-delay: 0.35s;
-  opacity: 0;
-  animation-fill-mode: forwards;
-  animation-name: fadeInUp;
-  animation-duration: 0.6s;
-  animation-timing-function: ease;
-}
-.fade-in-up-delay-4 {
-  animation-delay: 0.5s;
-  opacity: 0;
-  animation-fill-mode: forwards;
-  animation-name: fadeInUp;
-  animation-duration: 0.6s;
-  animation-timing-function: ease;
+.dark {
+  --background: 160 20% 8%;
+  --foreground: 0 0% 98%;
+  --card: 160 20% 10%;
+  --card-foreground: 0 0% 98%;
+  --popover: 160 20% 10%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 153 70% 42%;
+  --primary-foreground: 0 0% 100%;
+  --primary-soft: 153 40% 16%;
+  --primary-hover: 153 70% 48%;
+  --secondary: 160 16% 14%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 160 16% 14%;
+  --muted-foreground: 150 8% 65%;
+  --accent: 160 16% 14%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62% 50%;
+  --destructive-foreground: 0 0% 100%;
+  --destructive-soft: 0 40% 16%;
+  --warning: 38 92% 55%;
+  --warning-soft: 38 40% 16%;
+  --border: 160 16% 18%;
+  --input: 160 16% 18%;
+  --ring: 153 70% 42%;
 }
 
-/* Card hover lift */
-.card-hover {
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
-}
-.card-hover:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px 0px #1a1a1a;
+/* ---------------------------------------------------------------
+ * Base styles
+ * In Tailwind v4 the default border color is `currentColor`, not the
+ * theme's --color-border. We restore the v3 behavior with a plain
+ * CSS rule (no `@apply border-border`, which errors in v4).
+ * --------------------------------------------------------------- */
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: hsl(var(--border));
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family:
+      "Plus Jakarta Sans",
+      system-ui,
+      -apple-system,
+      sans-serif;
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    letter-spacing: -0.025em;
+  }
 }
 
-/* Kanban card hover */
-.kanban-card-hover {
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
-  cursor: pointer;
-}
-.kanban-card-hover:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 5px 5px 0px 0px #1a1a1a;
+/* ---------------------------------------------------------------
+ * Component utilities
+ * --------------------------------------------------------------- */
+@layer components {
+  .container-page {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 48rem; /* max-w-3xl */
+    padding-inline: 1.25rem; /* px-5 */
+  }
+  @media (min-width: 640px) {
+    .container-page {
+      padding-inline: 1.5rem;
+    } /* sm:px-6 */
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    border-radius: 9999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 600;
+  }
 }
 
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-::-webkit-scrollbar-thumb {
-  background: #1a1a1a;
-  border-radius: 0px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #008751;
-}
-
-/* Leaflet overrides */
+/* ---------------------------------------------------------------
+ * Leaflet map — soft & flat to match the design system
+ * --------------------------------------------------------------- */
 .leaflet-container {
-  font-family: var(--font-body);
-  border: 2px solid #1a1a1a;
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  background: hsl(var(--secondary));
 }
-
 .leaflet-popup-content-wrapper {
-  border: 2px solid #1a1a1a;
-  border-radius: 0;
-  box-shadow: 4px 4px 0px 0px #1a1a1a;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-soft);
+  padding: 4px;
 }
-.leaflet-popup-tip {
-  background: #1a1a1a;
+.leaflet-popup-content {
+  margin: 10px 12px;
 }
-
-/* Radio input style */
-.incident-radio {
-  display: none;
-}
-.incident-radio:checked + label {
-  background-color: #1a1a1a;
-  color: #ffffff;
-  border-color: #1a1a1a;
+.leaflet-control-zoom a {
+  border-radius: 12px !important;
+  color: hsl(var(--foreground)) !important;
 }
 
-/* Dropzone */
-.dropzone-active {
-  border-color: #008751 !important;
-  background-color: #f0fdf4 !important;
+/* ---------------------------------------------------------------
+ * Legacy App.css styles (kept for any logo/landing markup)
+ * --------------------------------------------------------------- */
+#root {
+  /* Removed max-width/centering — Next.js layouts manage page width.
+     Add back if you port a Vite-style root container. */
 }
 
-/* Diagonal pattern bg */
-.diagonal-bg {
-  background-image: repeating-linear-gradient(
-    -45deg,
-    transparent,
-    transparent 4px,
-    rgba(0, 135, 81, 0.05) 4px,
-    rgba(0, 135, 81, 0.05) 8px
-  );
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card-legacy {
+  padding: 2em;
+}
+.read-the-docs {
+  color: #888;
 }
