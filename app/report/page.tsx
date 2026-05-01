@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Camera, CheckCircle2 } from "lucide-react";
 import { ISSUE_TYPES, NIGERIAN_STATES } from "@/data/mockIncidents";
-import { toast } from "@/hooks/use-toast";
+// import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
 const fieldClass =
@@ -35,17 +35,17 @@ const Report = () => {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.state || !form.issueType || !form.details.trim()) {
-      toast({
-        title: "Small thing missing",
-        description: "Pick a State, an Issue Type, and tell us what happened.",
-      });
+      // toast({
+      //   title: "Small thing missing",
+      //   description: "Pick a State, an Issue Type, and tell us what happened.",
+      // });
       return;
     }
     setSubmitted(true);
-    toast({
-      title: "Report sent ✅",
-      description: "Thank you. Our team go check am sharp sharp.",
-    });
+    // toast({
+    //   title: "Report sent ✅",
+    //   description: "Thank you. Our team go check am sharp sharp.",
+    // });
     setTimeout(() => router.push("/map"), 1600);
   };
 
